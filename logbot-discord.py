@@ -47,13 +47,14 @@ def ensure_path(file_path):
 @client.event
 async def on_message(message):
 
-    path = logfile_path + "/" + message.server.id + "/" + message.channel.id + "/" + message.timestamp.strftime("%F") + ".txt"
-    ensure_path(path) # Create path if it does not exist
+    if message.server:
+        path = logfile_path + "/" + message.server.id + "/" + message.channel.id + "/" + message.timestamp.strftime("%F") + ".txt"
+        ensure_path(path) # Create path if it does not exist
 
-    logline = message.timestamp.strftime("%F-%H-%M-%S") + " " + message.server.name + ":" + message.channel.name + ":" + message.author.name + "#" + message.author.discriminator + ": " + message.content + "\n"
+        logline = message.timestamp.strftime("%F-%H-%M-%S") + " " + message.server.name + ":" + message.channel.name + ":" + message.author.name + "_" + message.author.discriminator + ": " + message.content + "\n"
 
-    with open(path, 'a') as log:
-        log.write(logline)
+        with open(path, 'a') as log:
+            log.write(logline)
 
 
 @client.event
